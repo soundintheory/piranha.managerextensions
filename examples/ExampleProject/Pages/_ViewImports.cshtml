@@ -1,0 +1,10 @@
+@using Piranha.AspNetCore.Models
+@using ExampleProject.Models
+@namespace ExampleProject.Pages
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, SoundInTheory.Piranha.Navigation.Menus
+@addTagHelper *, ExampleProject
+@inject Piranha.AspNetCore.Services.IApplicationService WebApp
+@inject Microsoft.AspNetCore.Authorization.IAuthorizationService Auth
+@inject SoundInTheory.Piranha.MediaExtensions.Images.Helpers.MediaCropHelper ImageCrop
+@inject SoundInTheory.Piranha.ContentExtensions.Areas.Services.ContentAreaService Areas

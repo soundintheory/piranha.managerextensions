@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="examples/ExampleProject/ExampleProject.csproj" />
+  <Project Path="modules/SoundInTheory.Piranha.PageManagerExtensions/SoundInTheory.Piranha.PageManagerExtensions.csproj" />
+  <Project Path="modules/SoundInTheory.Piranha.ManagerScopes/SoundInTheory.Piranha.ManagerScopes.csproj" />
+</Solution>

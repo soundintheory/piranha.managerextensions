@@ -1,0 +1,15 @@
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+a {
+    color: $col--black;
+    text-decoration: none;
+
+    &:focus,
+    &:hover,
+    &:active {
+        color: $col--black;
+        text-decoration: none;
+    }
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

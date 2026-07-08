@@ -1,0 +1,56 @@
+@use "sass:math";
+
+@function rem($size) {
+    $remSize: math.div($size, 16px);
+    @return #{$remSize}rem;
+}
+
+@function remove-duplicates($list, $recursive: false) {
+    $result: ();
+
+    @each $item in $list {
+        @if not index($result, $item) {
+            @if length($item) > 1 and $recursive {
+                $result: append($result, remove-duplicates($item, $recursive));
+            } @else {
+                $result: append($result, $item);
+            }
+        }
+    }
+
+    @return $result;
+}
+
+@function map-deep-list-join($map,$values) {
+    // If the last key is a map already
+    // Warn the user we will be overriding it with $value
+    @if type-of($values) != "map" {
+        @warn "The value you specified is not a map;";
+    }
+
+    @each $key, $value in $values {
+        $map: map-list-join($map, $key, $value);
+    }
+
+    @return $map;
+}
+
+@function map-list-join($map, $key , $value) {
+    // If the last key is a map already
+    // Warn the user we will be overriding it with $value
+    @if type-of($value) != "list" and type-of($value) != "number" {
+        @warn "The value you specified is not a list or number;";
+    }
+
+    $list: map-get($map, $key);
+
+    @return map-merge($map, ($key: remove-duplicates(join($list,$value))));
+}
+
+@function get-class-name($prefix, $value) {
+    $class-name: $value;
+    @if($prefix != "xs") {
+        $class-name: $prefix + "-" + $value;
+    }
+    @return $class-name;
+}

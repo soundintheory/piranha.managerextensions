@@ -1,0 +1,47 @@
+
+// No ugly scrollbars on the left hand nav
+
+.navbar.navbar-left::-webkit-scrollbar {
+    display: none;
+}
+
+.navbar.navbar-left {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+// Don't cut off longer block type names
+
+.blocktype-list {
+    display: flex;
+    flex-wrap: wrap;
+
+    .blocktype {
+        display: block;
+
+        .btn {
+            display: block;
+            height: 100%;
+        }
+
+        span {
+            white-space: normal;
+        }
+    }
+}
+
+.block {
+
+    &.block-group-horizontal,
+    &.block-group-vertical {
+        border-color: #ced4da;
+
+        > .block-header {
+            opacity: 1;
+        }
+
+        > .block-group-actions {
+            opacity: 1;
+        }
+    }
+}

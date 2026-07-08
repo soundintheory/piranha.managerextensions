@@ -1,0 +1,35 @@
+
+html{
+    scroll-behavior: smooth;
+}
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+body {
+    color: $col--black;
+    @include fontTextLight();
+    font-size: rem(16px);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
+#page{
+    width: 100%;
+    max-width: 1520px;
+    margin: auto;
+    padding-top: 40px;
+}
+
+.block{
+    margin-bottom:40px
+}
+
+img,video {
+    max-width: 100%;
+    width: 100%;
+    margin-bottom:15px;
+}
+

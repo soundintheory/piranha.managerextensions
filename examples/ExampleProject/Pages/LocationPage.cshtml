@@ -1,0 +1,25 @@
+@page
+@model SinglePage<LocationPage>
+@{
+    ViewData["Title"] = !string.IsNullOrEmpty(Model.Data.MetaTitle) ? Model.Data.MetaTitle : Model.Data.Title;
+}
+@section head {
+    @WebApp.MetaTags(Model.Data)
+}
+
+<header id="header">
+    <div class="container d-flex-col vertical-align-center justify-content-center">
+        <h1>@Model.Data.Title</h1>
+    </div>
+</header>
+
+<main id="page">
+    @foreach (var block in Model.Data.Blocks)
+    {
+        <div class="block @block.CssName()">
+            <div class="container">
+                @Html.DisplayFor(m => block, block.GetType().Name)
+            </div>
+        </div>
+    }
+</main>

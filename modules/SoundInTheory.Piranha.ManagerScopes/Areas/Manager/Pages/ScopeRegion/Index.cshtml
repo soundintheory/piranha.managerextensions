@@ -1,0 +1,55 @@
+@page "~/manager/scoperegion/{pageId:guid}/{regionId}"
+@model SoundInTheory.Piranha.ManagerScopes.Areas.Manager.Pages.ScopeRegion.IndexModel
+@inject Piranha.Manager.ManagerLocalizer Localizer
+@{
+    ViewBag.Title = Localizer.Page["Edit region"];
+    ViewBag.MenuItem = "Pages";
+    Layout = "/Areas/Manager/Shared/_Layout.cshtml";
+
+    var assetBase = Url.Content("~" + SoundInTheory.Piranha.ManagerScopes.Module.AssetPath);
+    var version = Piranha.Utils.GetAssemblyVersionHash(typeof(SoundInTheory.Piranha.ManagerScopes.Module).Assembly);
+    var coreVersion = Piranha.Utils.GetAssemblyVersionHash(typeof(Piranha.Manager.Module).Assembly);
+}
+
+<div id="scoperegionedit">
+    <div class="top">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">@Localizer.Menu["Content"]</li>
+                <li class="breadcrumb-item"><a href="~/manager/pages">@Localizer.Menu["Pages"]</a></li>
+                <li class="breadcrumb-item app" v-bind:class="{ ready: !loading }">{{ title }}</li>
+                <li class="breadcrumb-item active" aria-current="page">{{ regionName }}</li>
+            </ol>
+        </nav>
+
+        <div class="container-fluid app" v-bind:class="{ ready: !loading }">
+            <div class="top-nav">
+                <button v-on:click.prevent="save" class="btn btn-success btn-labeled">
+                    <i class="fas fa-check"></i>@Localizer.General["Save"]
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid app" v-bind:class="{ ready: !loading }">
+        <div class="card">
+            <div class="card-body">
+                <div class="region" v-if="region" v-bind:class="{ 'region-center': region.meta.width === 'centered' }">
+                    <region v-bind:content="'page'" v-bind:type="typeId" v-bind:model="region"></region>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section script {
+    <script src="@Url.Content(Piranha.Manager.Editor.EditorScripts.MainScriptUrl)"></script>
+    <script src="@Url.Content(Piranha.Manager.Editor.EditorScripts.EditorScriptUrl)"></script>
+    <script src="~/manager/assets/js/piranha.components.min.js?v=@coreVersion"></script>
+    <script src="@assetBase/vue/scoperegionedit.js?v=@version"></script>
+    <script>
+        piranha.permissions.load(function () {
+            piranha.scoperegionedit.load("@Model.PageId", "@Model.RegionId");
+        });
+    </script>
+}

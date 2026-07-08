@@ -1,0 +1,103 @@
+@*
+    Our replacement left-hand nav. It ALWAYS renders (scoped or not) and hides Piranha's core nav via
+    CSS — the core nav has no extension slot, and rendering our own lets us place the scope switcher
+    exactly where we want (in-flow, under the brand). When unscoped we mimic the core menu
+    (Menu.Items + content groups, permission-filtered); when scoped we render the scope's menu
+    (ScopeMenuService). The nav is pinned open at 200px and the body/top-bar offsets widened to match.
+*@
+@using System.Linq
+@using Microsoft.AspNetCore.Authorization
+@using Piranha.Manager
+@using SoundInTheory.Piranha.ManagerScopes.Services
+@inject ManagerLocalizer Localizer
+@inject IAuthorizationService Auth
+@inject ScopeMenuService ScopeMenuService
+@{
+    var scopedMenu = await ScopeMenuService.GetMenuAsync(User);
+    var coreMenu = scopedMenu == null ? await Menu.Items.GetForUser(User, Auth) : null;
+    var logout = Piranha.App.Modules.Manager().LogoutUrl;
+    var currentPath = (Context.Request.Path.Value ?? "").TrimEnd('/');
+}
+
+<style>
+    /* Always use our own nav; hide Piranha's core nav. */
+    body > nav.navbar-left:not(#scoped-navbar) { display: none !important; }
+
+    [v-cloak] { display: none !important; }
+
+    .navbar.navbar-left::-webkit-scrollbar { display: none; }
+    .navbar.navbar-left { -ms-overflow-style: none; scrollbar-width: none; }
+
+    /* Pin our nav open at 200px (no hover-collapse) and make room for it. */
+    .navbar.navbar-left { width: 200px !important; }
+    body { margin-left: 200px !important; }
+    .top .container-fluid { left: 200px !important; width: calc(100% - 200px) !important; }
+
+    /* Scope switcher — in-flow under the brand. */
+    #scope-switcher { display: block; margin: .75rem 0; height: 32px; }
+    .scope-switcher-inner { position: relative; padding: 0 .5rem; font-size: .8rem; }
+    
+    #scope-switcher .select2-container--default .select2-selection--single {
+        color: #fff;
+        background: #3d444b;
+        border: 1px solid rgba(255,255,255,.15);
+        border-radius: 4px;
+    }
+
+    #scope-switcher .select2-container--default .select2-selection--single .select2-selection__rendered {
+        color: #fff;
+    }
+
+    .select2-container .select2-selection--single {
+        height: 30px;
+    }
+
+    .select2-container--default .select2-selection--single .select2-selection__arrow {
+        top: 2px;
+    }
+</style>
+
+<nav id="scoped-navbar" class="navbar navbar-left fixed-top navbar-dark bg-dark">
+    <a class="navbar-brand" href="@Url.Content("~/manager")" tabindex="-1"></a>
+
+    <partial name="/Areas/Manager/Partial/_ScopeSwitcher.cshtml" />
+
+    <ul class="navbar-nav">
+        @if (scopedMenu != null)
+        {
+            <li class="nav-item nav-header">
+                <span class="navbar-text"><i class="fas fa-map-marker-alt"></i>@scopedMenu.ScopeTitle</span>
+            </li>
+            foreach (var item in scopedMenu.Items)
+            {
+                var route = (Url.Content(item.Route) ?? "").TrimEnd('/');
+                var active = !string.IsNullOrEmpty(route) && currentPath.StartsWith(route, System.StringComparison.OrdinalIgnoreCase);
+                <li class="nav-item@(active ? " active" : "")">
+                    <a href="@Url.Content(item.Route)" class="nav-link" tabindex="-1"><i class="@item.Css"></i>@item.Title</a>
+                </li>
+            }
+        }
+        else
+        {
+            @* Mimic the core nav: permission-filtered menu groups + content groups. *@
+            foreach (var group in coreMenu)
+            {
+                <li class="nav-item nav-header"><span class="navbar-text"><i class="@group.Css"></i>@Localizer.Menu[group.Name]</span></li>
+                foreach (var item in group.Items)
+                {
+                    <li class="nav-item@(ViewBag.MenuItem == item.InternalId ? " active" : "")"><a href="@Url.Content(item.Route)" class="nav-link" tabindex="-1"><i class="@item.Css"></i>@Localizer.Menu[item.Name]</a></li>
+                }
+                if (group.InternalId == "Content")
+                {
+                    foreach (var contentGroup in Piranha.App.ContentGroups.Where(g => !g.IsHidden))
+                    {
+                        <li class="nav-item@(ViewBag.MenuItem == contentGroup.Id ? " active" : "")"><a href="@Url.Content($"~/manager/content/{contentGroup.Id}")" class="nav-link" tabindex="-1"><i class="@contentGroup.Icon"></i>@contentGroup.Title</a></li>
+                    }
+                }
+            }
+        }
+        <li class="nav-item nav-header">
+            <a class="navbar-text" href="@Url.Content(logout)"><i class="fas fa-power-off"></i>@Localizer.Menu["Logout"]</a>
+        </li>
+    </ul>
+</nav>

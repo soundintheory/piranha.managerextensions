@@ -1,0 +1,52 @@
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+.btn {
+    position: relative;
+    display: inline-block;
+    background: none;
+    cursor: pointer;
+    border: none;
+    text-align: center;
+    padding: 0;
+    padding: 14px 42px 15px;
+    border-radius: 30px;
+    transition: background-color .3s ease-out, color .3s ease-out;
+    font-size: 15px;
+    @include fontTitle;
+    text-decoration: none !important;
+    white-space: nowrap;
+
+    &:hover {
+        text-decoration: none;
+    }
+
+    &.disabled, &[disabled] {
+        cursor: not-allowed;
+        filter: alpha(opacity=65);
+        opacity: 0.65;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+    }
+}
+
+.btn-block {
+    display: block;
+    width: 100%;
+}
+
+.btn-primary {
+    color: $col--white;
+    background-color: $col--primary;
+
+    &:focus {
+        color: $col--white;
+        background-color: $col--primary;
+    }
+
+    &:hover {
+        background-color: $col--primary-hover;
+        color: $col--white;
+    }
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

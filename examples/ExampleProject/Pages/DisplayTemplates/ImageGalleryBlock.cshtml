@@ -1,0 +1,23 @@
+@model Piranha.Extend.Blocks.ImageGalleryBlock
+@addTagHelper *, ExampleProject
+
+@using Piranha.Extend.Blocks
+@{
+    var unique = "gallery-" + Guid.NewGuid().ToString();
+    var images = Model.Items
+        .Where(i => i.GetType() == typeof(ImageBlock) && ((ImageBlock)i).Body.HasValue)
+        .ToList();
+}
+
+<link rel="stylesheet" href="~/assets/css/modules/generic-slider.css" embedded>
+
+<div id="@unique" class="swiper" data-module="generic-slider">
+    <div class="swiper-wrapper">
+            @foreach (var item in images)
+            {
+                <div class="swiper-slide">
+                    <img src="@Url.Content(WebApp.Media.ResizeImage(((ImageBlock)item).Body.Media, 1100, 450))">
+                </div>
+            }
+    </div>
+</div>

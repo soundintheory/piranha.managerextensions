@@ -1,0 +1,54 @@
+.editor {
+
+    h2 {
+        font-size: rem(28px);
+    }
+
+    h3 {
+        font-size: rem(25px);
+    }
+
+    h4 {
+        font-size: rem(21px);
+    }
+
+    h2, h3, h4 {
+        margin-top: rem(35px);
+        margin-bottom: rem(20px);
+    }
+
+    ul, p {
+        margin-bottom: rem(20px);
+    }
+
+    ul {
+        list-style: disc;
+        list-style-position: outside;
+        padding-left: rem(18px);
+    }
+
+    a {
+        text-decoration: underline;
+
+        &:hover {
+            text-decoration: none;
+        }
+    }
+
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+
+    table td {
+        padding: rem(6px) rem(10px);
+
+        &:first-of-type {
+            padding-left: 0;
+        }
+
+        &:last-of-type {
+            padding-right: 0;
+        }
+    }
+}

@@ -1,0 +1,266 @@
+@use 'sass:math';
+
+// Add required columns here
+@include add-columns(
+    (
+        xs: 5 10 15 20 25 30 33 35 40 45 50 55 60 66 70 75 100,
+        sm: 5 10 15 20 25 30 33 35 40 45 50 55 60 66 70 75 100,
+        md: 5 10 15 20 25 30 33 35 40 45 50 55 60 66 70 75 100,
+        lg: 5 10 15 20 25 30 33 35 40 45 50 55 60 66 70 75 100,
+        xl: 5 10 15 20 25 30 33 35 40 45 50 55 60 66 70 75 100,
+        xxl: 5 10 15 20 25 30 33 35 40 45 50 55 60 66 70 75 100
+    )
+);
+
+* {
+    box-sizing: border-box;
+
+    &:before,
+    &:after {
+        box-sizing: border-box;
+    }
+}
+
+
+.container {
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    width: 100%;
+    padding-left: rem(math.div($grid-gutter-width, 2));
+    padding-right: rem(math.div($grid-gutter-width, 2));
+
+    @include sm-up {
+        padding-left: rem(math.div($grid-gutter-width, 2));
+        padding-right: rem(math.div($grid-gutter-width, 2));
+    }
+
+
+    @include lg-up {
+        padding-left: rem($grid-gutter-width);
+        padding-right: rem($grid-gutter-width);
+    }
+    @include lg-only{        
+        max-width: rem($screen-lg - $grid-gutter-width);
+    }
+
+    @include xl-only{
+        max-width: rem($screen-xl - $grid-gutter-width);
+    }
+
+    @include xxl-only{
+        max-width: rem(1280px);
+    }
+
+
+    &.nopad {
+        padding: 0;
+    }
+
+    &.vertical-center {
+        height: 100%;
+
+        > div {
+            width: 100%;
+        }
+    }
+
+    &.narrow{
+        max-width: 813px;
+    }
+
+    @include xs-only {
+        > .full-width-xs {
+            margin-left: -(rem(-(math.div($grid-gutter-width, 2))));
+            margin-right: -(rem(-(math.div($grid-gutter-width, 2))));
+            padding-left: rem(-(math.div($grid-gutter-width, 2)));
+            padding-right: rem(-(math.div($grid-gutter-width, 2)));
+        }
+    }
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 rem(-(math.div($grid-gutter-width, 2)));
+
+    &.row-center {
+        justify-content: center;
+    }
+
+    &.row-end {
+        justify-content: flex-end;
+    }
+
+    &.row-even {
+        justify-content: space-evenly;
+    }
+
+    &.row-between {
+        justify-content: space-between;
+    }
+
+    &.vertical-align-start {
+        align-items: flex-start;
+    }
+
+    &.vertical-align-middle {
+        align-items: center;
+    }
+
+    &.vertical-align-end {
+        align-items: flex-end;
+    }
+
+    &.flex-nowrap {
+        flex-wrap: nowrap;
+    }
+
+    &.fill-height {
+        height: 100%;
+    }
+
+    &.column {
+        flex-direction: column;
+        margin: 0;
+    }
+
+    > .col,
+    > [class*='col-'] {
+        flex-shrink: 0;
+        max-width: 100%;
+        padding-left: rem(math.div($grid-gutter-width, 2));
+        padding-right: rem(math.div($grid-gutter-width, 2));
+    }
+
+    > .col {
+        flex: 1 0 0%;
+    }
+
+    > .col-fill {
+        flex: 1;
+    }
+
+    &.nogutter {
+        margin: 0;
+
+        > .col,
+        > [class*='col-'] {
+            padding-left: 0;
+            padding-right: 0;
+        }
+    }
+
+    @include sm-up {
+        > .col-sm {
+            flex: 1 0 0%;
+        }
+    }
+
+    @include md-up {
+        > .col-md {
+            flex: 1 0 0%;
+        }
+    }
+
+    @include lg-up {
+        > .col-lg {
+            flex: 1 0 0%;
+        }
+    }
+
+    @include xl-only {
+        > .col-xl {
+            flex: 1 0 0%;
+        }
+    }
+
+    @include vertical-columns();
+}
+
+@include xs-only {
+    .hidden-xs {
+        display: none !important;
+    }
+}
+
+@include sm-only {
+    .hidden-sm {
+        display: none !important;
+    }
+}
+
+@include sm-down {
+    .hidden-sm-down {
+        display: none !important;
+    }
+}
+
+@include md-down {
+    .hidden-md-down {
+        display: none !important;
+    }
+}
+
+@include lg-down {
+    .hidden-lg-down {
+        display: none !important;
+    }
+}
+
+@include sm-up {
+    .hidden-sm-up {
+        display: none !important;
+    }
+}
+
+@include md-up {
+    .hidden-md-up {
+        display: none !important;
+    }
+}
+
+@include lg-up {
+    .hidden-lg-up {
+        display: none !important;
+    }
+}
+
+@include xl-only {
+    .hidden-xl {
+        display: none !important;
+    }
+}
+
+.flex {
+    display: flex;
+    flex-wrap: nowrap;
+
+    &.column {
+        flex-direction: column;
+    }
+
+    &.justify-content-end {
+        justify-content: flex-end;
+    }
+
+    &.justify-content-between {
+        justify-content: space-between;
+    }
+
+    &.justify-content-center {
+        justify-content: center;
+    }
+
+    &.align-items-center {
+        align-items: center;
+    }
+
+    &.align-items-end {
+        align-items: flex-end;
+    }
+
+    &.align-items-start {
+        align-items: flex-start;
+    }
+}

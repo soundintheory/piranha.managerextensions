@@ -1,0 +1,45 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="resources\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AngleSharp" Version="1.4.0" />
+    <PackageReference Include="FluentEmail.Core" Version="3.0.2" />
+    <PackageReference Include="FluentEmail.MailKit" Version="3.0.2" />
+    <PackageReference Include="FluentEmail.Razor" Version="3.0.2" />
+    <PackageReference Include="Piranha" Version="12.0.0" />
+    <PackageReference Include="Piranha.AspNetCore" Version="12.0.0" />
+    <PackageReference Include="Piranha.AspNetCore.Identity.SQLite" Version="12.0.0" />
+    <PackageReference Include="Piranha.AttributeBuilder" Version="12.0.0" />
+    <PackageReference Include="Piranha.Data.EF.SQLite" Version="12.0.0" />
+    <PackageReference Include="Piranha.ImageSharp" Version="12.0.0" />
+    <PackageReference Include="Piranha.Local.FileStorage" Version="12.0.0" />
+    <PackageReference Include="Piranha.Manager" Version="12.0.0" />
+    <PackageReference Include="Piranha.Manager.LocalAuth" Version="12.0.0" />
+    <PackageReference Include="Piranha.Manager.TinyMCE" Version="12.0.0" />
+    <PackageReference Include="Sentry" Version="6.6.0" />
+    <PackageReference Include="Sentry.AspNetCore" Version="6.6.0" />
+    <PackageReference Include="Sentry.Extensions.Logging" Version="6.6.0" />
+    <PackageReference Include="SoundInTheory.Piranha.ContentExtensions.Areas" Version="2.1.0" />
+    <PackageReference Include="SoundInTheory.Piranha.ContentExtensions.Singletons" Version="2.1.0" />
+    <PackageReference Include="SoundInTheory.Piranha.ManagerExtensions.Lists" Version="1.0.4" />
+    <PackageReference Include="SoundInTheory.Piranha.MediaExtensions.Images" Version="4.8.0" />
+    <PackageReference Include="SoundInTheory.Piranha.Navigation.Links" Version="2.2.2" />
+    <PackageReference Include="SoundInTheory.Piranha.Navigation.Menus" Version="2.3.1" />
+  </ItemGroup>
+
+  <!-- Local modules under development (the reusable page-tree replacement + manager scoping). -->
+  <ItemGroup>
+    <ProjectReference Include="..\..\modules\SoundInTheory.Piranha.PageManagerExtensions\SoundInTheory.Piranha.PageManagerExtensions.csproj" />
+    <ProjectReference Include="..\..\modules\SoundInTheory.Piranha.ManagerScopes\SoundInTheory.Piranha.ManagerScopes.csproj" />
+  </ItemGroup>
+
+</Project>

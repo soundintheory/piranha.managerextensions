@@ -1,0 +1,61 @@
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// GRID
+
+$grid-gutter-width: 30px;
+$grid-gutter-width-xs: 20px;
+$vertical-columns: (
+    xs: (),
+    sm: (),
+    lg: (),
+    xl: ()
+);
+$horizontal-columns: (
+    xs: (),
+    sm: (),
+    md: (),
+    lg: (),
+    xl: (),
+    xxl: ()
+);
+
+// Extra small screen / phone
+$screen-sm: 480px;
+
+// Small screen / tablet
+$screen-md: 768px;
+
+// Medium screen / desktop
+$screen-lg: 992px;
+
+// Large screen / wide desktop
+$screen-xl: 1200px;
+
+// Large screen / wide desktop
+$screen-xxl: 1700px;
+
+// Media query helpers
+$xs: '(max-width: #{rem($screen-sm - 1)})';
+$sm: '(min-width: #{rem($screen-sm)}) and (max-width: #{rem($screen-md - 1)})';
+$sm-down: '(max-width: #{rem($screen-md - 1)})';
+$sm-up: '(min-width: #{rem($screen-sm)})';
+$md: '(min-width: #{rem($screen-md)}) and (max-width: #{rem($screen-lg - 1)})';
+$md-down: '(max-width: #{rem($screen-lg - 1)})';
+$md-up: '(min-width: #{rem($screen-md)})';
+$lg: '(min-width: #{rem($screen-lg)}) and (max-width: #{rem($screen-xl - 1)})';
+$lg-down: '(max-width: #{rem($screen-xl - 1)})';
+$lg-up: '(min-width: #{rem($screen-lg)})';
+$xl: '(min-width: #{rem($screen-xl)})';
+$xl-up: '(min-width: #{rem($screen-xl)})';
+$xl-down: '(max-width: #{rem($screen-xxl - 1)})';
+$xxl: '(min-width: #{rem($screen-xxl)})';
+$retina: '(-webkit-device-pixel-ratio: 1.5), (min-resolution: 144dpi)';
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+$font--title: 'Roboto Serif', serif;
+
+$font--text: 'Roboto', Arial, sans-serif;
+

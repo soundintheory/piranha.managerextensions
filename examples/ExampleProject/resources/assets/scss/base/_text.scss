@@ -1,0 +1,83 @@
+.text-center{
+    text-align: center;
+}
+.text-right
+{
+    text-align: right;
+}
+
+.button-as-text{
+    background: none;
+	color: inherit;
+	border: none;
+	padding: 0;
+	font: inherit;
+	cursor: pointer;
+	outline: inherit;
+}
+
+.nowrap{
+    white-space: nowrap;
+}
+
+.nowrap-md{
+    @include md-up {
+        white-space: nowrap;
+    }
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+.pill {
+    @include fontTitle;
+    font-size: 16px;
+    text-transform: uppercase;
+    padding: 6px 15px;
+    display: inline-block;
+    color: #fff;
+    border-radius: 200px;
+    margin-bottom: 5px;
+
+    &.primary {
+        background-color: $col--primary;
+    }
+
+
+    &.white {
+        background-color: $col--white;
+        color: $col--black;
+    }
+}
+
+h1, h2, h3, h4, h5, h6 {
+    @include fontTitle;
+}
+
+h2{
+    font-size:41px;
+    margin-bottom: 30px;
+}
+
+h3 {
+    font-size: 36px;
+    margin-bottom: 15px;
+}
+
+h3 {
+    font-size: 31px;
+    margin-bottom: 20px;
+}
+
+h4,h5,h6 {
+    font-size: 26px;
+    margin-bottom: 15px;
+}
+
+.lead {
+    font-size: 21px;
+    margin-bottom: 20px;
+}
+
+p {
+    margin-bottom: 15px;
+}

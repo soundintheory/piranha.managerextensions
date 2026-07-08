@@ -1,0 +1,8 @@
+bin/
+obj/
+node_modules/
+# Vite build output (generated from resources/ via `npm run build`)
+# /assets/ # temporarily including built assets whilst this is a submodule
+.vite/
+.nuget/
+*.user

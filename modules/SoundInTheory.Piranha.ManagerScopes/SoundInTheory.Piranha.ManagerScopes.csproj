@@ -1,0 +1,47 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
+  </PropertyGroup>
+
+  <!-- NuGet packaging metadata (used by pack.bat / `dotnet pack`). -->
+  <PropertyGroup>
+    <Version>1.0.0</Version>
+    <Authors>Sound in Theory</Authors>
+    <Company>Sound in Theory</Company>
+    <Description>Scope the Piranha manager to a sub-tree (e.g. a franchise location), with a header switcher and per-scope permissions.</Description>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Piranha" Version="12.0.0" />
+    <PackageReference Include="Piranha.AspNetCore.Hosting" Version="12.0.0" />
+    <PackageReference Include="Piranha.Manager" Version="12.0.0" />
+  </ItemGroup>
+
+  <!-- Re-roots/filters the page tree through PageManagerExtensions' seams (IPageTreeRootResolver,
+       IPageTreeFilter). This is the one-way dependency: ManagerScopes -> PageManagerExtensions. -->
+  <ItemGroup>
+    <ProjectReference Include="..\SoundInTheory.Piranha.PageManagerExtensions\SoundInTheory.Piranha.PageManagerExtensions.csproj" />
+  </ItemGroup>
+
+  <!-- Embed the Vite-built assets so they ship inside the assembly (used in RELEASE builds). -->
+  <ItemGroup>
+    <EmbeddedResource Include="assets/**" />
+  </ItemGroup>
+
+  <!-- Keep npm/Vite files out of build output, but visible in the IDE. -->
+  <ItemGroup>
+    <Content Remove="package.json" />
+    <Content Remove="package-lock.json" />
+    <None Include="package.json" />
+    <None Include="vite.config.js" />
+  </ItemGroup>
+
+</Project>

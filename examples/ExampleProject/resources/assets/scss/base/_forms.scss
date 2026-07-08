@@ -1,0 +1,25 @@
+.form{
+    padding-top: 30px;
+    padding-bottom: 30px
+}
+
+
+.form-group{
+    margin-bottom: 30px;
+    &.has-error{
+        color: $col--error;
+        .form-control{
+            border-color: $col--error;
+            &:focus{
+                box-shadow: 0 5px 0 0 $col--error;
+            }
+            &::placeholder {
+                color: $col--error;
+            }
+        }
+    }
+
+    .feedback{
+        margin-top: 8px;
+    }
+}

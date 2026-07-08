@@ -1,0 +1,19 @@
+@*
+    Scope switcher markup. Rendered *inside* our replacement nav (_ScopeNav), in-flow under the brand.
+    Uses a select2 typeahead (select2 is bundled with Piranha). Behaviour in scopeswitcher.js: it loads
+    the scopes, inits select2, and on change switches scope (redirecting to the equivalent menu item).
+*@
+<style>
+    #scope-switcher .select2-container { width: 100% !important; }
+    #scope-switcher .select2-selection { font-size: .8rem; }
+</style>
+
+<div id="scope-switcher">
+    <div class="scope-switcher-inner" v-if="scopes.length > 0" v-cloak>
+        @* Sentinel value (not "") so select2 doesn't treat this as its placeholder and hide it. *@
+        <select class="form-control select2" ref="select">
+            <option v-if="canUnscoped" value="__all__">Main Website</option>
+            <option v-for="scope in scopes" v-bind:key="scope.id" v-bind:value="scope.id">{{ scope.title }}</option>
+        </select>
+    </div>
+</div>

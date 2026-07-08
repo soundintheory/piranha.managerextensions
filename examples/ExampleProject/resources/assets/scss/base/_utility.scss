@@ -1,0 +1,35 @@
+
+.visually-hidden {
+    @include visuallyHidden();
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+.d-flex{
+    display: flex;
+}
+
+.d-flex-col {
+    display: flex;
+    flex-direction: column;
+}
+
+.vertical-align-center{
+    align-items: center;
+}
+
+.justify-content-end{
+    justify-content: flex-end;
+}
+
+.justify-content-start{
+    justify-content: flex-start;
+}
+
+.justify-content-center {
+    justify-content: center;
+}
+
+.p-relative{
+    position: relative;
+}

@@ -1,0 +1,106 @@
+@page "~/manager/scopepage/{id:guid}"
+@model SoundInTheory.Piranha.ManagerScopes.Areas.Manager.Pages.ScopePage.IndexModel
+@inject Piranha.Manager.ManagerLocalizer Localizer
+@{
+    ViewBag.Title = Localizer.Page["Edit page"];
+    ViewBag.MenuItem = "Pages";
+    Layout = "/Areas/Manager/Shared/_Layout.cshtml";
+
+    var assetBase = Url.Content("~" + SoundInTheory.Piranha.ManagerScopes.Module.AssetPath);
+    var version = Piranha.Utils.GetAssemblyVersionHash(typeof(SoundInTheory.Piranha.ManagerScopes.Module).Assembly);
+    var coreVersion = Piranha.Utils.GetAssemblyVersionHash(typeof(Piranha.Manager.Module).Assembly);
+}
+
+<div id="scopepageedit">
+    <div class="top">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">@Localizer.Menu["Content"]</li>
+                <li class="breadcrumb-item"><a href="~/manager/pages">@Localizer.Menu["Pages"]</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{ title }}</li>
+            </ol>
+        </nav>
+
+        <div class="container-fluid app" v-bind:class="{ ready: !loading }">
+            <div class="top-nav">
+                <button v-on:click.prevent="save" class="btn btn-success btn-labeled">
+                    <i class="fas fa-check"></i>@Localizer.General["Save"]
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid app" v-bind:class="{ ready: !loading }">
+        <!-- Title -->
+        <div class="card">
+            <div class="card-body">
+                <div class="form-group title mb-0">
+                    <input v-model="title" type="text" class="form-control form-control-lg" placeholder="@Localizer.Page["Your page title"]">
+                </div>
+            </div>
+        </div>
+
+        <!-- Blocks (main content), when the page type uses them -->
+        <div class="card" v-if="useBlocks">
+            <div class="card-body">
+                <div id="content-blocks" class="blocks">
+                    <a href="#" class="block-add unsortable" v-on:click.prevent="piranha.blockpicker.open(piranha.scopepageedit.addBlock, 0)">
+                        <hr>
+                        <i class="fas fa-plus-circle"></i>
+                    </a>
+                    <div v-for="(block, index) in blocks" v-bind:key="block.meta.uid">
+                        <div v-bind:class="'block ' + block.meta.component + (block.meta.isCollapsed ? ' collapsed' : '') + (block.meta.width === 'full' ? ' block-full' : '')">
+                            <div v-bind:id="'tb-' + block.meta.uid" class="component-toolbar"></div>
+                            <div class="block-header">
+                                <div class="title">
+                                    <i v-bind:class="block.meta.icon"></i><strong>{{ block.meta.name }}</strong> <span v-if="!block.meta.isGroup && block.meta.isCollapsed">- {{ block.meta.title }}</span>
+                                </div>
+                                <div class="actions">
+                                    <span v-on:click.prevent="collapseBlock(block)" class="btn btn-sm">
+                                        <i v-if="block.meta.isCollapsed" class="fas fa-chevron-down"></i>
+                                        <i v-else class="fas fa-chevron-up"></i>
+                                    </span>
+                                    <span class="btn btn-sm handle"><i class="fas fa-ellipsis-v"></i></span>
+                                    <button v-on:click.prevent="removeBlock(block)" class="btn btn-sm danger block-remove" tabindex="-1"><i class="fas fa-trash"></i></button>
+                                </div>
+                            </div>
+                            <component v-if="!block.meta.isGroup" v-bind:is="block.meta.component" v-bind:uid="block.meta.uid" v-bind:toolbar="'tb-' + block.meta.uid" v-bind:model="block.model" v-on:update-title="updateBlockTitle($event)"></component>
+                            <component v-if="block.meta.isGroup" v-bind:is="block.meta.component" v-bind:uid="block.meta.uid" v-bind:toolbar="'tb-' + block.meta.uid" v-bind:model="block"></component>
+                        </div>
+                        <a href="#" class="block-add" v-on:click.prevent="piranha.blockpicker.open(piranha.scopepageedit.addBlock, index + 1)">
+                            <hr>
+                            <i class="fas fa-plus-circle"></i>
+                        </a>
+                    </div>
+                    <div v-if="blocks.length == 0" class="empty-info">
+                        <p>@Localizer.Page["Welcome to your new page. Click on the button above to add your first block of content!"]</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Regions not surfaced in the scoped menu -->
+        <div class="card" v-for="region in regions" v-bind:key="region.meta.uid">
+            <div class="card-header">
+                <i v-bind:class="region.meta.icon"></i> {{ region.meta.name }}
+            </div>
+            <div class="card-body">
+                <div class="region" v-bind:class="{ 'region-center': region.meta.width === 'centered' }">
+                    <region v-bind:content="'page'" v-bind:type="typeId" v-bind:model="region"></region>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section script {
+    <script src="@Url.Content(Piranha.Manager.Editor.EditorScripts.MainScriptUrl)"></script>
+    <script src="@Url.Content(Piranha.Manager.Editor.EditorScripts.EditorScriptUrl)"></script>
+    <script src="~/manager/assets/js/piranha.components.min.js?v=@coreVersion"></script>
+    <script src="@assetBase/vue/scopepageedit.js?v=@version"></script>
+    <script>
+        piranha.permissions.load(function () {
+            piranha.scopepageedit.load("@Model.PageId");
+        });
+    </script>
+}

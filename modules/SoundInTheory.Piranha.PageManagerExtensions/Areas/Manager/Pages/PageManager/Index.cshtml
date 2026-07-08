@@ -1,0 +1,141 @@
+@page "~/manager/pagemanager/{rootId?}"
+@model SoundInTheory.Piranha.PageManagerExtensions.Areas.Manager.Pages.PageManager.IndexModel
+@inject Piranha.Manager.ManagerLocalizer Localizer
+@{
+    ViewBag.Title = Localizer.Page["Pages"];
+    ViewBag.MenuItem = "Pages";
+    Layout = "/Areas/Manager/Shared/_Layout.cshtml";
+
+    var assetBase = Url.Content("~" + SoundInTheory.Piranha.PageManagerExtensions.Module.AssetPath);
+    var version = Piranha.Utils.GetAssemblyVersionHash(typeof(SoundInTheory.Piranha.PageManagerExtensions.Module).Assembly);
+    var coreVersion = Piranha.Utils.GetAssemblyVersionHash(typeof(Piranha.Manager.Module).Assembly);
+    var rootId = Model.RootId?.ToString() ?? "";
+}
+
+<div id="pagemanager">
+    <div class="top">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">@Localizer.Menu["Content"]</li>
+                <li class="breadcrumb-item active" aria-current="page">@Localizer.Menu["Pages"]</li>
+            </ol>
+        </nav>
+
+        <div class="container-fluid">
+            <div class="top-nav">
+                <button v-on:click.prevent="expand" class="btn btn-info btn-icon" title="@Localizer.General["Expand"]">
+                    <i class="fas fa-plus"></i>
+                </button>
+                <button v-on:click.prevent="collapse" class="btn btn-info btn-icon" title="@Localizer.General["Collapse"]">
+                    <i class="fas fa-minus"></i>
+                </button>
+                <button v-if="piranha.permissions.sites.add && !isRooted" v-on:click.prevent="piranha.siteedit.create(load)" class="btn btn-primary btn-labeled">
+                    <i class="fas fa-globe"></i>
+                    @Localizer.Site["Add site"]
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid app" v-bind:class="{ ready: !loading }">
+        <div class="row">
+            <div class="col">
+                <div class="sitemap">
+                    <ol>
+                        <li v-for="site in sites" v-bind:key="site.id">
+                            <div class="sitemap-item">
+                                <div class="handle"><i class="fas fa-globe"></i></div>
+                                <div class="link">
+                                    <a v-if="site.rootId" v-bind:href="piranha.baseUrl + site.rootEditUrl + site.rootId">
+                                        <span class="title">{{ site.title }}</span>
+                                    </a>
+                                    <a v-else-if="piranha.permissions.sites.edit" v-on:click.prevent="piranha.siteedit.open(site.id, load)" href="#">{{ site.title }}</a>
+                                    <span v-else class="title">{{ site.title }}</span>
+                                </div>
+                                <div>
+                                    <button v-if="piranha.permissions.pages.add" id="pageGroup" type="button" v-on:click.prevent="add(site.id, site.rootId, false)" class="btn btn-sm btn-primary btn-labeled">
+                                        <i class="fas fa-plus"></i>
+                                        @Localizer.Page["Add page"]
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="sitemap sitemap-container dd" v-bind:data-id="site.id" v-bind:data-root="site.rootId" v-bind:data-can-reorder="site.canReorder ? 'true' : 'false'">
+                                <ol class="dd-list">
+                                    <pm-sitemap-item v-for="item in site.pages" v-bind:key="item.id" v-bind:item="item"></pm-sitemap-item>
+                                </ol>
+                            </div>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add page modal -->
+    <div id="pmPageAddModal" class="modal modal-panel" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header border-bottom-0">
+                    <h5 class="modal-title"><i class="fas fa-file"></i> @Localizer.Page["Add page"]</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <ul class="nav nav-tabs" id="pmPageAddTabs" role="tablist">
+                    <li class="nav-item">
+                        <a href="#pmPageAddNew" data-toggle="tab" class="nav-link active"><i class="fas fa-plus"></i> @Localizer.General["Empty"]</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#pmPageAddCopy" data-toggle="tab" class="nav-link"><i class="fas fa-copy"></i> @Localizer.General["Copy"]</a>
+                    </li>
+                </ul>
+                <div class="modal-body bg-light">
+                    <div class="tab-content">
+                        <div id="pmPageAddNew" class="tab-pane show active" role="tabpanel">
+                            <table class="table">
+                                <tbody>
+                                    <tr v-for="type in pageTypes">
+                                        <td>
+                                            <a v-if="addPageId !== null" v-bind:href="piranha.baseUrl + 'manager/page/addrelative/' + addPageId + '/' + type.id + '/' + addAfter">{{ type.title }}</a>
+                                            <a v-else v-bind:href="piranha.baseUrl + type.addUrl + addToSiteId + '/' + type.id">{{ type.title }}</a>
+                                            <span v-if="type.description" class="d-block dimmed">{{ type.description }}</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div id="pmPageAddCopy" class="tab-pane" role="tabpanel">
+                            <div v-if="sites.length > 1" class="form-group d-flex justify-content-center">
+                                <div class="dropdown">
+                                    <button class="btn btn-primary btn-labeled dropdown-toggle" type="button" data-toggle="dropdown">
+                                        <span class="btn-label"><i class="fas fa-globe"></i></span>
+                                        {{ addSiteTitle }}
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" href="#" v-for="site in sites" v-on:click.prevent="selectSite(site.id)">{{ site.title }}</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="sitemap sitemap-container">
+                                <ol v-if="site.id === addSiteId" v-for="site in sites">
+                                    <pm-pagecopy-item v-for="item in site.pages" v-bind:key="item.id" v-bind:item="item"></pm-pagecopy-item>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<partial name="~/Areas/Manager/Shared/Partial/_SiteModal.cshtml" />
+
+@section script {
+    <script src="@Url.Content(Piranha.Manager.Editor.EditorScripts.MainScriptUrl)"></script>
+    <script src="@Url.Content(Piranha.Manager.Editor.EditorScripts.EditorScriptUrl)"></script>
+    <script src="~/manager/assets/js/piranha.components.min.js?v=@coreVersion"></script>
+    <script src="@assetBase/vue/pagemanager.js?v=@version"></script>
+    <script src="~/manager/assets/js/piranha.siteedit.min.js?v=@coreVersion"></script>
+    <script>
+        piranha.pagemanager.load("@rootId");
+    </script>
+}

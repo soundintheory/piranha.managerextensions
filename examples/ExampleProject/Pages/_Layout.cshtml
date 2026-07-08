@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    @RenderSection("Title", required: false)
+
+    @if (!IsSectionDefined("Title"))
+    {
+        <title>@ViewData["Title"]</title>
+    }
+
+    <link rel="stylesheet" href="~/assets/css/app.critical.css" embedded>
+
+    @RenderSection("head", required: false)
+</head>
+<body>
+    <partial name="Partials/_Header.cshtml">
+
+    @RenderBody()
+
+    <partial name="Partials/_Footer.cshtml">
+
+    <script src="~/assets/js/app.js" asp-append-version="true"></script>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>
