@@ -72,7 +72,7 @@
             {
                 var route = (Url.Content(item.Route) ?? "").TrimEnd('/');
                 var active = !string.IsNullOrEmpty(route) && currentPath.StartsWith(route, System.StringComparison.OrdinalIgnoreCase);
-                <li class="nav-item@(active ? " active" : "")">
+                <li class="nav-item@(active ? " active" : "")" data-internal-id="@item.InternalId">
                     <a href="@Url.Content(item.Route)" class="nav-link" tabindex="-1"><i class="@item.Css"></i>@item.Title</a>
                 </li>
             }
@@ -85,13 +85,13 @@
                 <li class="nav-item nav-header"><span class="navbar-text"><i class="@group.Css"></i>@Localizer.Menu[group.Name]</span></li>
                 foreach (var item in group.Items)
                 {
-                    <li class="nav-item@(ViewBag.MenuItem == item.InternalId ? " active" : "")"><a href="@Url.Content(item.Route)" class="nav-link" tabindex="-1"><i class="@item.Css"></i>@Localizer.Menu[item.Name]</a></li>
+                    <li class="nav-item@(ViewBag.MenuItem == item.InternalId ? " active" : "")" data-internal-id="@item.InternalId"><a href="@Url.Content(item.Route)" class="nav-link" tabindex="-1"><i class="@item.Css"></i>@Localizer.Menu[item.Name]</a></li>
                 }
                 if (group.InternalId == "Content")
                 {
                     foreach (var contentGroup in Piranha.App.ContentGroups.Where(g => !g.IsHidden))
                     {
-                        <li class="nav-item@(ViewBag.MenuItem == contentGroup.Id ? " active" : "")"><a href="@Url.Content($"~/manager/content/{contentGroup.Id}")" class="nav-link" tabindex="-1"><i class="@contentGroup.Icon"></i>@contentGroup.Title</a></li>
+                        <li class="nav-item@(ViewBag.MenuItem == contentGroup.Id ? " active" : "")" data-internal-id="@contentGroup.Id"><a href="@Url.Content($"~/manager/content/{contentGroup.Id}")" class="nav-link" tabindex="-1"><i class="@contentGroup.Icon"></i>@contentGroup.Title</a></li>
                     }
                 }
             }
